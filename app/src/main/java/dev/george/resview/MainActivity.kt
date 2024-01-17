@@ -2,7 +2,9 @@ package dev.george.resview
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.recyclerview.widget.RecyclerView
+import dev.george.resview.adapter.ClickEvents
 import dev.george.resview.adapter.PostsAdapter
 import dev.george.resview.adapter.StoriesAdapter
 import dev.george.resview.model.Post
@@ -36,6 +38,30 @@ class MainActivity : AppCompatActivity() {
     private fun setupPostsRecyclerView() {
         postsAdapter = PostsAdapter(posts)
         rvPosts.adapter = postsAdapter
+        postsRecyclerViewClickListener()
+    }
+
+    private fun postsRecyclerViewClickListener() {
+        postsAdapter.setOnItemClickListener { clickEvents: ClickEvents, post: Post ->
+            when(clickEvents) {
+                ClickEvents.LIKE -> {
+                    Log.d(TAG, "postsRecyclerViewClickListener: clickEvents: ${clickEvents.name} post $post")
+                    // do on like click listener logic here
+                }
+                ClickEvents.COMMENT -> {
+                    Log.d(TAG, "postsRecyclerViewClickListener: clickEvents: ${clickEvents.name} post $post")
+                    // do on comment click listener logic here
+                }
+                ClickEvents.SHARE -> {
+                    Log.d(TAG, "postsRecyclerViewClickListener: clickEvents: ${clickEvents.name} post $post")
+                    // do on share click listener logic here
+                }
+            }
+        }
+    }
+
+    private companion object {
+        private const val TAG = "MainActivity"
     }
 
 }

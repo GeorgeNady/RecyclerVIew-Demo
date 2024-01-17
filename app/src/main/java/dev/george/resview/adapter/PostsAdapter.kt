@@ -1,6 +1,5 @@
 package dev.george.resview.adapter
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,6 +11,8 @@ import dev.george.resview.model.Post
 import kotlin.random.Random
 
 class PostsAdapter(private val posts: List<Post>): RecyclerView.Adapter<PostsAdapter.MyViewHolder>() {
+
+    private var onItemClickListener: ((ClickEvents, Post) -> Unit)? = null
 
     inner class MyViewHolder(itemView: View): RecyclerView.ViewHolder(itemView)
 
@@ -49,17 +50,26 @@ class PostsAdapter(private val posts: List<Post>): RecyclerView.Adapter<PostsAda
 
 
         btnLike.setOnClickListener {
-            Log.d("PostAdapter", "position $position")
-            Log.d("PostAdapter", "currentItem $currentItem")
+            onItemClickListener?.let { it(ClickEvents.LIKE, currentItem) }
         }
 
         btnComment.setOnClickListener {
-            Log.d("PostAdapter", "btn Comment clicked")
+            onItemClickListener?.let { it(ClickEvents.COMMENT, currentItem) }
         }
 
         btnShare.setOnClickListener {
-            Log.d("PostAdapter", "btn Share clicked")
+            onItemClickListener?.let { it(ClickEvents.SHARE, currentItem) }
         }
     }
 
+    fun setOnItemClickListener(listener: (ClickEvents, Post) -> Unit) {
+        onItemClickListener = listener
+    }
+
+}
+
+enum class ClickEvents {
+    LIKE,
+    COMMENT,
+    SHARE
 }
